@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(hello)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 add_library(hello-a 
   "a/include/hello/a.h"

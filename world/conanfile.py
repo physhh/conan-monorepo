@@ -9,7 +9,7 @@ class WorldConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = {"shared": False}
     requires = "hello/0.1"
-    generators = "cmake"
+    generators = "cmake_paths", "cmake_find_package"
     exports_sources = "project/*"
 
     def build(self):
@@ -26,10 +26,10 @@ class WorldConan(ConanFile):
 
         # Build and source infos
         self.cpp.source.components["a"].includedirs = ["a/include"]
-        self.cpp.build.components["a"].libdirs = ["lib"]
+        self.cpp.build.components["a"].libdirs = ["."]
 
         self.cpp.source.components["b"].includedirs = ["b/include"]
-        self.cpp.build.components["b"].libdirs = ["lib"]
+        self.cpp.build.components["b"].libdirs = ["."]
 
         # Package infos
         self.cpp.package.components["a"].includedirs = ["include/a"]
