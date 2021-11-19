@@ -1,0 +1,6 @@
+if(NOT TARGET hello::a)
+  add_library(hello::a ALIAS hello-a)
+endif()
+if(NOT TARGET hello::b)
+  add_library(hello::b ALIAS hello-b)
+endif()
