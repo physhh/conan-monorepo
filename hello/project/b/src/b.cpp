@@ -5,6 +5,7 @@
 namespace hello {
 
 void do_b() {
+  fmt::print("lal {}", 21 + 21);
   std::cout << "Doing 'b'..." << std::endl;
 }
 

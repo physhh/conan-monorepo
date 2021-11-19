@@ -10,6 +10,7 @@ class HelloConan(ConanFile):
     default_options = {"shared": False}
     generators = "cmake_paths", "cmake_find_package"
     exports_sources = "project/*"
+    requires = ["fmt/8.0.1"]
 
     def build(self):
         cmake = CMake(self)
@@ -23,21 +24,17 @@ class HelloConan(ConanFile):
         self.folders.build = "build/{}".format(build_type)
         self.folders.generators = os.path.join(self.folders.build, "conan")
 
-        # Build and source infos
-        self.cpp.source.components["a"].includedirs = ["a/include"]
-        self.cpp.build.components["a"].libdirs = ["."]
+        def _add_component(component_name, requires):
+            self.cpp.source.components[component_name].includedirs = ["{}/include".format(component_name)]
+            self.cpp.build.components[component_name].libdirs = ["."]
+            
+            self.cpp.package.components[component_name].includedirs = ["include/{}".format(component_name)]
+            self.cpp.package.components[component_name].libs = ["{}-{}".format(self.name, component_name)]
+            self.cpp.package.components[component_name].libdirs = ["lib"]
+            self.cpp.package.components[component_name].requires = requires
 
-        self.cpp.source.components["b"].includedirs = ["b/include"]
-        self.cpp.build.components["b"].libdirs = ["."]
-
-        # Package infos
-        self.cpp.package.components["a"].includedirs = ["include/a"]
-        self.cpp.package.components["a"].libs = ["hello-a"]
-        self.cpp.package.components["a"].libdirs = ["lib"]
-        
-        self.cpp.package.components["b"].includedirs = ["include/b"]
-        self.cpp.package.components["b"].libs = ["hello-b"]
-        self.cpp.package.components["b"].libdirs = ["lib"]
+        _add_component("a", [])
+        _add_component("b", ["fmt::fmt"])
 
 
     def package(self):

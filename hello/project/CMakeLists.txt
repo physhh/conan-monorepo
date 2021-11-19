@@ -4,6 +4,8 @@ project(hello)
 
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
+find_package(fmt REQUIRED)
+
 add_library(hello-a 
   "a/include/hello/a.h"
   "a/src/a.cpp"
@@ -18,4 +20,7 @@ add_library(hello-b
 )
 target_include_directories(hello-b
   PUBLIC "b/include"
+)
+target_link_libraries(hello-b
+  PUBLIC fmt::fmt
 )
