@@ -22,25 +22,25 @@ class HelloConan(ConanFile):
         self.folders.source = "project"
         self.folders.build = "build/{}".format(build_type)
         self.folders.generators = os.path.join(self.folders.build, "conan")
+
+        # Build and source infos
+        self.cpp.source.components["a"].includedirs = ["a/include"]
+        self.cpp.build.components["a"].libdirs = ["lib"]
+
+        self.cpp.source.components["b"].includedirs = ["b/include"]
+        self.cpp.build.components["b"].libdirs = ["lib"]
+
+        # Package infos
+        self.cpp.package.components["a"].includedirs = ["include/a"]
+        self.cpp.package.components["a"].libs = ["hello-a"]
+        self.cpp.package.components["a"].libdirs = ["lib"]
         
-        self.cpp.source.includedirs = [
-            "a/include",
-            "b/include",
-        ]
-
-        self.cpp.build.libdirs = ["lib"]
-        self.cpp.build.bindirs = ["bin"]
-
-        self.cpp.package.libs = ["hello-a", "hello-b"]
-        self.cpp.package.includedirs = [
-            "include/a",
-            "include/b",
-        ]
+        self.cpp.package.components["b"].includedirs = ["include/b"]
+        self.cpp.package.components["b"].libs = ["hello-b"]
+        self.cpp.package.components["b"].libdirs = ["lib"]
 
 
     def package(self):
         packager = AutoPackager(self)
         packager.run()
 
-    def package_info(self):
-        self.cpp_info.libs = ["hello"]
